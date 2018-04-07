@@ -1,13 +1,21 @@
 import pdb
 
 class Heap:
-   def __init__(self):
-      self.data = []
+   def __init__(self, list = []):
+      self.data = list
+      self.size = len(self.data)
+      self._heapify()
+   
+   def _heapify(self):
+      start = self._parent(self.size - 1)
+      while start >= 0:
+         self._siftdown(start)
+         start -= 1
+         
    def __str__(self):
       return str(self.data)
    
    def _siftup(self, index):
-      pdb.set_trace()
       while self._parent(index) is not None and self.data[self._parent(index)] < self.data[index]:
          self._swap(index, self._parent(index))
          index = self._parent(index)
@@ -27,25 +35,25 @@ class Heap:
    def _parent(self, index):
       if index == 0:
          return None
-      p_index = (index-1)/2
+      p_index = (index-1)//2
       return p_index
       
    def _leftchild(self, index):
       leftchild_index = index * 2 + 1
-      if leftchild_index < len(self.data):
+      if leftchild_index < self.size:
          return leftchild_index
       else:
          return None
       
    def _rightchild(self, index):
       rightchild_index = index * 2 + 2
-      if rightchild_index < len(self.data):
+      if rightchild_index < self.size:
          return rightchild_index
       else:
          return None
          
    def _swap(self, i1, i2):
-      assert i1 < len(self.data) and i2 < len(self.data)
+      assert i1 < self.size and i2 < self.size
       temp = self.data[i1]
       self.data[i1] = self.data[i2]
       self.data[i2] = temp
@@ -53,15 +61,33 @@ class Heap:
       
    def push(self, node):
       self.data.append(node)
-      self._siftup(len(self.data)-1)
+      self._siftup(self.size-1)
       
    def pop(self):
-      if len(self.data) == 1:
+      if self.size == 1:
          return self.data.pop(0)
       elif self.data:
          output = self.data[0]
-         self.data[0] = self.data.pop(len(self.data)-1)
+         self.data[0] = self.data.pop(self.size-1)
          self._siftdown(0)
          return output
       else:
          return None
+         
+   def sort(self):
+      count = self.size - 1
+      while count > 0:
+         self._swap(0, count)
+         self.size -= 1
+         self._siftdown(0)
+         count -= 1
+      return self.data
+         
+         
+def heapsort(list):
+   h = Heap(list)
+   print(h.sort())
+   
+test_list = [3,24,52,34434,123,43,243,65,2,454,765,345,36,675,345,24,45,54,45,0,54]
+heapsort(test_list)
+   
