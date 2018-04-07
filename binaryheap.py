@@ -77,10 +77,10 @@ class Heap:
    def sort(self):
       count = self.size - 1
       while count > 0:
-         self._swap(0, count)
-         self.size -= 1
-         self._siftdown(0)
-         count -= 1
+         self._swap(0, count)   # 1. swap first element with last element
+         self.size -= 1         # 2. reduce the heap range. The remaining list becomes sorted list
+         self._siftdown(0)      # 3. reshape the heap so that it fulfill the heap property again.
+         count -= 1             # 4. repeat step 1-3 until the heap size becomes 0 and the sorted list size becomes the original list size.
       return self.data
          
          
